@@ -1,6 +1,7 @@
 import pickle
 import numpy as np
 from flask import Flask, request, render_template
+import pandas as pd
 from sklearn.impute import KNNImputer
 from waitress import serve
 
@@ -30,99 +31,54 @@ def predict():
                           'lege_overlevelsesestimat_2mnd', 'lege_overlevelsesestimat_6mnd', 'utdanning_kategori', 
                           'fysiologisk_score_merge', 'fysiologisk_komorbiditet_mult', 'nyrefunksjon', 'hjertefunksjon']
 
-        # Definer standardverdier for spesifikke felt
+        # Standardverdier
         default_values = {
-            'blod_ph': 7.40,
-            'lungefunksjon': 333.3,
-            'blodurea_nitrogen': 6.51,
-            'glukose': 85,
-            'urinmengde': 2502,
-            'sykdomskategori': 1,
-            'adl_stedfortreder': 0.0,
-            'overlevelsesestimat_2mnd': 1.0,
-            'overlevelsesestimat_6mnd': 1.0,
-            'lege_overlevelsesestimat_2mnd': 1.0,
-            'lege_overlevelsesestimat_6mnd': 1.0,
-            'utdanning_kategori': 0.0,
-            'fysiologisk_score_merge': 0.0,
-            'fysiologisk_komorbiditet_mult': 0.0,
-            'kroppstemperatur': 37.0,   
-            'serumalbumin': 3.0,
-            'hvite_blodlegemer': 11.0, #normal verdi
-            'nyrefunksjon': 52.0,
-            'hjertefunksjon': 90.0,
-            'koma_score': 0,
-            'respirasjonsfrekvens': 23.0,
-            'antall_komorbiditeter': 0
-
+            'blod_ph': 7.40, 'lungefunksjon': 333.3, 'blodurea_nitrogen': 6.5, 'glukose': 85,
+            'urinmengde': 2502, 'sykdomskategori': 1, 'adl_stedfortreder': 0.0, 'overlevelsesestimat_2mnd': 1.0,
+            'overlevelsesestimat_6mnd': 1.0, 'lege_overlevelsesestimat_2mnd': 1.0, 'lege_overlevelsesestimat_6mnd': 1.0,
+            'utdanning_kategori': 0.0, 'fysiologisk_score_merge': 0.0, 'fysiologisk_komorbiditet_mult': 0.0,
+            'kroppstemperatur': 37.0, 'serumalbumin': 3.0, 'hvite_blodlegemer': 11.0, 'nyrefunksjon': 52.0,
+            'hjertefunksjon': 90.0, 'koma_score': 0, 'respirasjonsfrekvens': 23.0, 'antall_komorbiditeter': 0
         }
-        # Håndter tomme strenger og konverter til riktig type for int-felter
-        for k in cast_to_ints:
-            value = request.form.get(k, '')  
-            if value.strip() == '':  
-                features[k] = np.nan  
-            else:
-                try:
-                    features[k] = int(value)  
-                except ValueError:
-                    features[k] = np.nan  # Hvis konvertering feiler, sett til NaN
-
-        # Håndter tomme strenger og konverter til riktig type for float-felter
-        for k in cast_to_floats:
-            value = request.form.get(k, '')  
-            if value.strip() == '':  
-                features[k] = np.nan  
-            else:
-                try:
-                    features[k] = float(value)  
-                except ValueError:
-                    features[k] = np.nan  
-
-        # Bruk standardverdier for spesifikke felt hvis de er NaN eller ikke finnes
-        for k, default_value in default_values.items():
-            if np.isnan(features.get(k, np.nan)):  # Hvis verdien er NaN
-                features[k] = default_value  # Bruk standardverdien
-    
-
-        #features['blod_ph'] = float(request.form.get('blod_ph', 7.40))
-        #features['lungefunksjon'] = float(request.form.get('lungefunksjon', 333.3))
-        #features['blodurea_nitrogen'] = float(request.form.get('blodurea_nitrogen', 6.51))
-        #features['glukose'] = float(request.form.get('glukose', 85))
-        #features['urinmengde'] = float(request.form.get('urinmengde', 2502))
-
         
-        # Konstruer input_features fra de behandlede verdiene
-        input_features = np.array([[features['alder'], features['inntekt'], features['etnisitet'], features['hvite_blodlegemer'],
-           features['respirasjonsfrekvens'], features['kroppstemperatur'], features['lungefunksjon'],
-           features['serumalbumin'], features['blod_ph'], features['glukose'], features['sykdomskategori'],
-           features['antall_komorbiditeter'], features['koma_score'], features['adl_stedfortreder'],
-           features['overlevelsesestimat_2mnd'], features['overlevelsesestimat_6mnd'], features['diabetes'],
-           features['demens'], features['lege_overlevelsesestimat_2mnd'],
-           features['lege_overlevelsesestimat_6mnd'], features['kjønn'], features['utdanning_kategori'],
-           features['fysiologisk_score_merge'], features['fysiologisk_komorbiditet_mult'],
-           features['nyrefunksjon'], features['hjertefunksjon'], features['kreft_sammenslått']]])
+        # Håndter tomme strenger og konverter til riktig type
+        for k in cast_to_ints + cast_to_floats:
+            value = request.form.get(k, '')
+            if value.strip() == '':
+                features[k] = default_values.get(k, np.nan)
+            else:
+                try:
+                    features[k] = int(value) if k in cast_to_ints else float(value)
+                except ValueError:
+                    features[k] = default_values.get(k, np.nan)
+        
+        # Lag en DataFrame med kolonnenavn som modellen forventer
+        columns = [
+            'alder', 'inntekt', 'etnisitet', 'hvite_blodlegemer', 'respirasjonsfrekvens', 'kroppstemperatur',
+            'lungefunksjon', 'serumalbumin', 'blod_ph', 'glukose', 'sykdomskategori', 'antall_komorbiditeter',
+            'koma_score', 'adl_stedfortreder', 'overlevelsesestimat_2mnd', 'overlevelsesestimat_6mnd', 'diabetes',
+            'demens', 'lege_overlevelsesestimat_2mnd', 'lege_overlevelsesestimat_6mnd', 'kjønn', 'utdanning_kategori',
+            'fysiologisk_score_merge', 'fysiologisk_komorbiditet_mult', 'nyrefunksjon', 'hjertefunksjon', 'kreft_sammenslått'
+        ]
+        
+        input_features_df = pd.DataFrame([features], columns=columns)
 
-        print("Input Features:", input_features)
-        print("Etter konvertering:", features)
-
-        #imputer = KNNImputer(n_neighbors=100)
-        #input_features_imputed = imputer.fit_transform(input_features)
-
-        #input_features_imputed = knn_imputer.transform(input_features)
+        print("Input Features DataFrame før prediksjon:")
+        print(input_features_df)
+        print("Antall funksjoner i modellen:", model.n_features_in_)
+        print("Kolonner i input_features_df:", input_features_df.columns.tolist())
 
         # Gjør prediksjonen
-        prediction = model.predict(input_features)
+        prediction = model.predict(input_features_df)
 
-
-        # Gjør prediksjonen
-        prediction = model.predict(input_features)
 
         # Returner prediksjonen til nettsiden
-        prediction_text = f"Forventet sykehusopphold er: {prediction[0]} dager"
+        prediction_text = f"Forventet sykehusopphold er: {round(prediction[0],3)} dager"
         return render_template('index.html', prediction=prediction_text)
 
     except Exception as e:
-        # Håndter feil og vis en feilmelding i stedet for prediksjon
+        # Logg feilen til konsollen
+        print(f"Feil oppstod: {str(e)}")
         error_text = f"Det oppstod en feil: {str(e)}. Vennligst kontroller input."
         return render_template('index.html', error=error_text)
 

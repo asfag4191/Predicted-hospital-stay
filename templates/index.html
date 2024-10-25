@@ -176,6 +176,15 @@
                     <option value=0>Nei</option>
                     <option value=1>Ja</option>
                 </select><br><br>
+
+                <!-- Sykdomskategori -->
+                <label for="sykdomskategori">Sykdomskategori:</label>
+                <select id="sykdomskategori" name="sykdomskategori" required>
+                    <option value=1>ARF/MOSF</option>
+                    <option value=2>COPD/CHF/Cirrhosis</option>
+                    <option value=3>Coma</option>
+                    <option value=4>Cancer</option>
+                </select><br><br>
             </div>
 
 
@@ -216,14 +225,6 @@
                 <input type="number" step="0.01" id="glukose" name="glukose" placeholder="Vanlig 70-100">
                 </select><br><br>
 
-                <!-- Sykdomskategori -->
-                <label for="sykdomskategori">Sykdomskategori:</label>
-                <select id="sykdomskategori" name="sykdomskategori" required>
-                    <option value=1>ARF/MOSF</option>
-                    <option value=2>COPD/CHF/Cirrhosis</option>
-                    <option value=3>Coma</option>
-                    <option value=4>Cancer</option>
-                </select><br><br>
 
                 <!-- Antall Komorbiditeter -->
                 <label for="antall_komorbiditeter">Antall Komorbiditeter:</label>
@@ -287,37 +288,37 @@
             Prediker sykehusopphold
         </button>
 
-     <!-- Modal -->
-     <div class="modal_container" id="modal_container">
-        <div class="modal">
-            <h1>Predikert sykehusopphold</h1>
-            <p id="prediction_result">{{ prediction }}</p>
-            <button id="close">Lukk</button>
+        <!-- Modal -->
+        <div class="modal_container" id="modal_container">
+            <div class="modal">
+                <h1>Predikert sykehusopphold</h1>
+                <p id="prediction_result">{{ prediction }}</p>
+                <button id="close">Lukk</button>
+            </div>
         </div>
-    </div>
 
-    {% if prediction %}
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        {% if prediction %}
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const modalContainer = document.getElementById("modal_container");
+                modalContainer.classList.add("show");
+            });
+        </script>
+        {% endif %}
+        <script>
             const modalContainer = document.getElementById("modal_container");
-            modalContainer.classList.add("show");
-        });
-    </script>
-    {% endif %}
-    <script>
-        const modalContainer = document.getElementById("modal_container");
-        const closeModal = document.getElementById("close");
+            const closeModal = document.getElementById("close");
 
-        closeModal.addEventListener("click", () => {
-            modalContainer.classList.remove("show");
-        });
-
-        window.onclick = function (event) {
-            if (event.target === modalContainer) {
+            closeModal.addEventListener("click", () => {
                 modalContainer.classList.remove("show");
+            });
+
+            window.onclick = function (event) {
+                if (event.target === modalContainer) {
+                    modalContainer.classList.remove("show");
+                }
             }
-        }
-    </script>
+        </script>
 </body>
 
 </html>
