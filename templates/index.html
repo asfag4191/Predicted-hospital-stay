@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sykehusopphold Prediksjon</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px;
+        }
+
+        .box {
+            width: 45%;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            margin: 10px;
+        }
+
+        .box h2 {
+            text-align: center;
+        }
+
+        .submit-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            /* Optional: Adds space above the button */
+
+        }
+
+        button {
+            background-color: #4CAF50;
+            border: 0;
+            border-radius: 5px;
+            color: white;
+            padding: 10px 25px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        /* When modal is opened */
+        #modal_container.show {
+            opacity: 1;
+            pointer-events: auto;
+            /* Allow clicking when visible */
+        }
+
+        #modal_container {
+            background-color: pink;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        #modal {
+            background-color: white;
+            border-radius: 5px;
+            padding: 30px 50px;
+            width: 600px;
+            max-width: 100%;
+            height: 400px;
+            text-align: center;
+
+        }
+
+        /* Optional: Ensure the modal opens centered */
+        /*.prediction-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+*/
+    </style>
+</head>
+
+
+
+<body>
+    <h1>Prediksjon av Sykehusopphold</h1>
+    <form action="/predict" method="POST">
+        <div class="container">
+            <div class="box">
+                <h2>Obligatoriske felt</h2>
+
+                <!-- Alder -->
+                <label for="alder">Alder:</label>
+                <input type="number" id="alder" name="alder" required min="0"
+                    oninvalid="this.setCustomValidity('Alder kan ikke være mindre enn 0.')"
+                    oninput="this.setCustomValidity('')"><br><br>
+
+                <!-- Kjønn -->
+                <label for="kjønn">Kjønn:</label>
+                <select name="kjønn" id="kjønn" required>
+                    <option value=0>Mann</option>
+                    <option value=1>Kvinne</option>
+                </select><br><br>
+
+                <!-- Inntekt -->
+                <label for="inntekt">Inntekt:</label>
+                <select id="inntekt" name="inntekt" required>
+                    <option value=0>Under $11k</option>
+                    <option value=1>$11-$25k</option>
+                    <option value=2>$25-$50k</option>
+                    <option value=3>Over $50k</option>
+                </select><br><br>
+
+                <!-- Etnisitet -->
+                <label for="etnisitet">Etnisitet:</label>
+                <select id="etnisitet" name="etnisitet" required>
+                    <option value=0>white</option>
+                    <option value=1>black</option>
+                    <option value=2>asian</option>
+                    <option value=3>hispanic</option>
+                    <option value=4>other</option>
+                </select><br><br>
+
+                <!-- Diabetes -->
+                <label for="diabetes">Har pasienten diabetes?</label>
+                <select id="diabetes" name="diabetes" required>
+                    <option value=0>Nei</option>
+                    <option value=1>Ja</option>
+                </select><br><br>
+
+                <!-- Utdanning Kategori -->
+                <label for="utdanning_kategori">Utdanningsnivå:</label>
+                <select id="utdanning_kategori" name="utdanning_kategori" required>
+                    <option value=0>Grunnskole/Ungdomsskole</option>
+                    <option value=1>Videregående</option>
+                    <option value=2>Høyere utdanning</option>
+                    <option value=3>Videre utdanning</option>
+                </select><br><br>
+
+                <!-- Kreft Sammenslått -->
+                <label for="kreft_sammenslått">Kreft:</label>
+                <select id="kreft_sammenslått" name="kreft_sammenslått" required>
+                    <option value=0>Ingen Kreft</option>
+                    <option value=1>Kreft</option>
+                </select><br><br>
+
+                <!-- Demens -->
+                <label for="demens">Demens:</label>
+                <select id="demens" name="demens" required>
+                    <option value=0>Nei</option>
+                    <option value=1>Ja</option>
+                </select><br><br>
+            </div>
+
+
+            <div class="box">
+                <h2>Frivillige felt (anbefaler å fylle inn)</h2>
+
+                <!-- Hvite Blodlegemer -->
+                <label for="hvite_blodlegemer">Hvite Blodlegemer:</label>
+                <input type="number" step="0.01" id="hvite_blodlegemer" name="hvite_blodlegemer"
+                    placeholder="Gj.snitt 12.4"><br><br>
+
+                <!-- Respirasjonsfrekvens -->
+                <label for="respirasjonsfrekvens">Respirasjonsfrekvens:</label>
+                <input type="number" step="0.01" id="respirasjonsfrekvens" name="respirasjonsfrekvens"
+                    placeholder="Gj.snitt 23.5"><br><br>
+
+                <!-- Kroppstemperatur -->
+                <label for="kroppstemperatur">Kroppstemperatur (°C):</label>
+                <input type="number" id="kroppstemperatur" name="kroppstemperatur"><br><br>
+
+                <!-- Lungefunksjon -->
+                <label for="lungefunksjon">Lungefunksjon:</label>
+                <input type="number" step="0.1" id="lungefunksjon" name="lungefunksjon"
+                    placeholder="Normal verdi over 300"><br><br>
+
+                <!-- Serumalbumin -->
+                <label for="serumalbumin">Serumalbumin:</label>
+                <input type="number" step="0.1" id="serumalbumin" name="serumalbumin" placeholder="Gj.snitt 2.96">
+                </select><br><br>
+
+                <!-- Blod pH -->
+                <label for="blod_ph">Blod pH:</label>
+                <input type="number" step="0.01" id="blod_ph" name="blod_ph" placeholder="Vanlig 7.35-7,45">
+                </select><br><br>
+
+                <!-- Glukose -->
+                <label for="glukose">Glukose:</label>
+                <input type="number" step="0.01" id="glukose" name="glukose" placeholder="Vanlig 70-100">
+                </select><br><br>
+
+                <!-- Sykdomskategori -->
+                <label for="sykdomskategori">Sykdomskategori:</label>
+                <select id="sykdomskategori" name="sykdomskategori" required>
+                    <option value=1>ARF/MOSF</option>
+                    <option value=2>COPD/CHF/Cirrhosis</option>
+                    <option value=3>Coma</option>
+                    <option value=4>Cancer</option>
+                </select><br><br>
+
+                <!-- Antall Komorbiditeter -->
+                <label for="antall_komorbiditeter">Antall Komorbiditeter:</label>
+                <input type="number" id="antall_komorbiditeter" name="antall_komorbiditeter"><br><br>
+                <br><br>
+
+                <!-- Koma Score -->
+                <label for="koma_score">Koma Score:</label>
+                <input type="number" id="koma_score" name="koma_score">
+                <br><br>
+
+                <!-- ADL Stedfortreder -->
+                <label for="adl_stedfortreder">ADL Stedfortreder:</label>
+                <input type="text" id="adl_stedfortreder" name="adl_stedfortreder">
+                <br><br>
+
+
+                <!-- Overlevelsesestimat 2mnd -->
+                <label for="overlevelsesestimat_2mnd">Overlevelsesestimat (2 måneder):</label>
+                <input type="number" id="overlevelsesestimat_2mnd" name="overlevelsesestimat_2mnd" step="0.01" min="0"
+                    max="1" placeholder="Mellom 0 og 1"><br><br>
+                <br><br>
+
+                <!-- Overlevelsesestimat 6mnd -->
+                <label for="overlevelsesestimat_6mnd">Overlevelsesestimat (6 måneder):</label>
+                <input type="number" id="overlevelsesestimat_6mnd" name="overlevelsesestimat_6mnd" step="0.01" min="0"
+                    max="1" placeholder="Mellom 0 og 1"><br><br>
+
+
+                <!-- Lege Overlevelsesestimat 2mnd -->
+                <label for="lege_overlevelsesestimat_2mnd">Lege Overlevelsesestimat (2 måneder):</label>
+                <input type="number" id="lege_overlevelsesestimat_2mnd" name="lege_overlevelsesestimat_2mnd" min="0"
+                    max="1" step="0.01" value="1"><br><br>
+
+                <!-- Lege Overlevelsesestimat 6mnd -->
+                <label for="lege_overlevelsesestimat_6mnd">Lege Overlevelsesestimat (6 måneder):</label>
+                <input type="number" id="lege_overlevelsesestimat_6mnd" name="lege_overlevelsesestimat_6mnd" min="0"
+                    max="1" step="0.01" value="1"><br><br>
+
+
+                <!-- Fysiologisk Score Merge -->
+                <label for="fysiologisk_score_merge">Fysiologisk Score Merge:</label>
+                <input type="number" id="fysiologisk_score_merge" name="fysiologisk_score_merge" placeholder=><br><br>
+
+                <!-- Fysiologisk Komorbiditet Mult -->
+                <label for="fysiologisk_komorbiditet_mult">Fysiologisk Komorbiditet Mult:</label>
+                <input type="number" id="fysiologisk_komorbiditet_mult" name="fysiologisk_komorbiditet_mult"><br><br>
+
+                <!-- Nyrefunksjon -->
+                <label for="nyrefunksjon">Nyrefunksjon:</label>
+                <input type="number" id="nyrefunksjon" name="nyrefunksjon"><br><br>
+
+                <!-- Hjertefunksjon -->
+                <label for="hjertefunksjon">Hjertefunksjon:</label>
+                <input type="number" id="hjertefunksjon" name="hjertefunksjon"><br><br>
+            </div>
+        </div>
+
+
+        <button id="open">
+            Prediker sykehusopphold
+        </button>
+
+     <!-- Modal -->
+     <div class="modal_container" id="modal_container">
+        <div class="modal">
+            <h1>Predikert sykehusopphold</h1>
+            <p id="prediction_result">{{ prediction }}</p>
+            <button id="close">Lukk</button>
+        </div>
+    </div>
+
+    {% if prediction %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const modalContainer = document.getElementById("modal_container");
+            modalContainer.classList.add("show");
+        });
+    </script>
+    {% endif %}
+    <script>
+        const modalContainer = document.getElementById("modal_container");
+        const closeModal = document.getElementById("close");
+
+        closeModal.addEventListener("click", () => {
+            modalContainer.classList.remove("show");
+        });
+
+        window.onclick = function (event) {
+            if (event.target === modalContainer) {
+                modalContainer.classList.remove("show");
+            }
+        }
+    </script>
+</body>
+
+</html>
