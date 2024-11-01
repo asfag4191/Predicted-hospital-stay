@@ -1,5 +1,7 @@
 ## Hvordan kjøre filen ved innlevering. 
 
+Hele prosjektet mitt er 'prosjekt.ipynb', også fikser jeg sample filen i 'preprocessed.ipynb'. 
+
 Jeg har laget den slik at den kan kjøres fra topp til bunn uten problemer. 
 Prosessen blir da i rekkefølgen: 
 - Leser inn data.
@@ -21,4 +23,6 @@ Har samlet koden, slik den blir fordelt på 9 hovedoverskrifter i filen.
 
 Hvis man ønsker oppnåde resultater som i rapporten må du sette behold_sykdomskategori=False, i starten. Deretter blir
 denne skrudd på igjen når man kommer til 5.0.1 variabelutvinning, og kan derfra bli skrudd på. I rapporten skriver jeg om 
-denne prosessen. Derfra er resterende if-setninger som jeg anvender skrudd på og tatt i bruk riktig.  
+denne prosessen. Derfra er resterende if-setninger som jeg anvender skrudd på og tatt i bruk riktig. 
+
+I tillegg har jeg kun tatt med de viktigste hyper parameterene under kjøring, slik den tar kortere tid å kjøre. 
