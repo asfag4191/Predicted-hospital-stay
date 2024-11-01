@@ -167,7 +167,7 @@
                 <label for="kreft_sammenslått">Kreft:</label>
                 <select id="kreft_sammenslått" name="kreft_sammenslått" required>
                     <option value=0>Ingen Kreft</option>
-                    <option value=1>Kreft</option>
+                    <option value=1>Kreft/Kreft spredning</option>
                 </select><br><br>
 
                 <!-- Demens -->
@@ -183,8 +183,16 @@
                     <option value=1>ARF/MOSF</option>
                     <option value=2>COPD/CHF/Cirrhosis</option>
                     <option value=3>Coma</option>
-                    <option value=4>Cancer</option>
+                    <option value=4>Colon/Lung cancer</option>
                 </select><br><br>
+
+
+            <!-- Fysiologisk Komorbiditet Mult -->
+            <label for="fysiologisk_komorbiditet_mult">Fysiologisk Komorbiditet Mult:</label>
+            <input type="number" id="fysiologisk_komorbiditet_mult" name="fysiologisk_komorbiditet_mult" min="0"
+                required placeholder="fys * komorbiditeter"
+                oninvalid="this.setCustomValidity('Fyll inn fysiologisk score * komorbiditeter. Verdien kan ikke være mindre enn 0.')"
+                oninput="this.setCustomValidity('')"> <br><br>
             </div>
 
 
@@ -193,52 +201,61 @@
 
                 <!-- Hvite Blodlegemer -->
                 <label for="hvite_blodlegemer">Hvite Blodlegemer:</label>
-                <input type="number" step="0.01" id="hvite_blodlegemer" name="hvite_blodlegemer"
-                    placeholder="Gj.snitt 12.4"><br><br>
+                <input type="number" step="0.01" id="hvite_blodlegemer" name="hvite_blodlegemer" min="0"
+                    oninvalid="this.setCustomValidity('Verdien kan ikke være mindre enn 0.')"
+                    oninput="this.setCustomValidity('')" placeholder="Gj.snitt 12.4"><br><br>
 
                 <!-- Respirasjonsfrekvens -->
                 <label for="respirasjonsfrekvens">Respirasjonsfrekvens:</label>
-                <input type="number" step="0.01" id="respirasjonsfrekvens" name="respirasjonsfrekvens"
-                    placeholder="Gj.snitt 23.5"><br><br>
+                <input type="number" step="0.01" id="respirasjonsfrekvens" name="respirasjonsfrekvens" min="0"
+                    oninvalid="this.setCustomValidity('Verdien kan ikke være mindre enn 0.')"
+                    oninput="this.setCustomValidity('')" placeholder="Gj.snitt 23.5"><br><br>
 
                 <!-- Kroppstemperatur -->
                 <label for="kroppstemperatur">Kroppstemperatur (°C):</label>
-                <input type="number" id="kroppstemperatur" name="kroppstemperatur"><br><br>
+                <input type="number" id="kroppstemperatur" name="kroppstemperatur" min="0"
+                    oninvalid="this.setCustomValidity('Verdien kan ikke være mindre enn 0.')"
+                    oninput="this.setCustomValidity('')"><br><br>
 
                 <!-- Lungefunksjon -->
                 <label for="lungefunksjon">Lungefunksjon:</label>
-                <input type="number" step="0.1" id="lungefunksjon" name="lungefunksjon"
-                    placeholder="Normal verdi over 300"><br><br>
+                <input type="number" step="0.1" id="lungefunksjon" name="lungefunksjon" min="0"
+                    oninvalid="this.setCustomValidity('Verdien kan ikke være mindre enn 0.')"
+                    oninput="this.setCustomValidity('')" placeholder="Normal verdi over 300"><br><br>
 
                 <!-- Serumalbumin -->
                 <label for="serumalbumin">Serumalbumin:</label>
-                <input type="number" step="0.1" id="serumalbumin" name="serumalbumin" placeholder="Gj.snitt 2.96">
+                <input type="number" step="0.1" id="serumalbumin" name="serumalbumin" min="0"
+                    oninvalid="this.setCustomValidity('Verdien kan ikke være mindre enn 0.')"
+                    oninput="this.setCustomValidity('')" placeholder="Gj.snitt 2.96"><br><br>
                 </select><br><br>
 
                 <!-- Blod pH -->
                 <label for="blod_ph">Blod pH:</label>
-                <input type="number" step="0.01" id="blod_ph" name="blod_ph" placeholder="Vanlig 7.35-7,45">
+                <input type="number" step="0.01" id="blod_ph" name="blod_ph" min="0"
+                    oninvalid="this.setCustomValidity('Verdien kan ikke være mindre enn 0.')"
+                    oninput="this.setCustomValidity('')" placeholder="Vanlig 7.35-7,45"><br><br>
                 </select><br><br>
 
                 <!-- Glukose -->
                 <label for="glukose">Glukose:</label>
-                <input type="number" step="0.01" id="glukose" name="glukose" placeholder="Vanlig 70-100">
-                </select><br><br>
+                <input type="number" step="0.01" id="glukose" name="glukose" min="0"
+                    oninvalid="this.setCustomValidity('Verdien kan ikke være mindre enn 0.')"
+                    oninput="this.setCustomValidity('')" placeholder="Vanlig 70-100"><br><br>
 
 
                 <!-- Antall Komorbiditeter -->
                 <label for="antall_komorbiditeter">Antall Komorbiditeter:</label>
-                <input type="number" id="antall_komorbiditeter" name="antall_komorbiditeter"><br><br>
-                <br><br>
-
-                <!-- Koma Score -->
-                <label for="koma_score">Koma Score:</label>
-                <input type="number" id="koma_score" name="koma_score">
+                <input type="number" id="antall_komorbiditeter" name="antall_komorbiditeter" min="0"
+                    oninvalid="this.setCustomValidity('Verdien kan ikke være mindre enn 0.')"
+                    oninput="this.setCustomValidity('')"><br><br>
                 <br><br>
 
                 <!-- ADL Stedfortreder -->
                 <label for="adl_stedfortreder">ADL Stedfortreder:</label>
-                <input type="text" id="adl_stedfortreder" name="adl_stedfortreder">
+                <input type="number" id="adl_stedfortreder" name="adl_stedfortreder" min="0"
+                    oninvalid="this.setCustomValidity('Verdien kan ikke være mindre enn 0.')"
+                    oninput="this.setCustomValidity('');">
                 <br><br>
 
 
@@ -257,29 +274,44 @@
                 <!-- Lege Overlevelsesestimat 2mnd -->
                 <label for="lege_overlevelsesestimat_2mnd">Lege Overlevelsesestimat (2 måneder):</label>
                 <input type="number" id="lege_overlevelsesestimat_2mnd" name="lege_overlevelsesestimat_2mnd" min="0"
-                    max="1" step="0.01" value="1"><br><br>
+                    max="1" step="0.01"><br><br>
 
                 <!-- Lege Overlevelsesestimat 6mnd -->
                 <label for="lege_overlevelsesestimat_6mnd">Lege Overlevelsesestimat (6 måneder):</label>
                 <input type="number" id="lege_overlevelsesestimat_6mnd" name="lege_overlevelsesestimat_6mnd" min="0"
-                    max="1" step="0.01" value="1"><br><br>
+                    max="1" step="0.01"><br><br>
 
 
                 <!-- Fysiologisk Score Merge -->
                 <label for="fysiologisk_score_merge">Fysiologisk Score Merge:</label>
-                <input type="number" id="fysiologisk_score_merge" name="fysiologisk_score_merge" placeholder=><br><br>
+                <input type="number" id="fysiologisk_score_merge" name="fysiologisk_score_merge" min="0"
+                    oninvalid="this.setCustomValidity('Verdien kan ikke være mindre enn 0. ')"
+                    oninput="this.setCustomValidity('')"> <br><br>
 
-                <!-- Fysiologisk Komorbiditet Mult -->
-                <label for="fysiologisk_komorbiditet_mult">Fysiologisk Komorbiditet Mult:</label>
-                <input type="number" id="fysiologisk_komorbiditet_mult" name="fysiologisk_komorbiditet_mult"><br><br>
 
                 <!-- Nyrefunksjon -->
                 <label for="nyrefunksjon">Nyrefunksjon:</label>
-                <input type="number" id="nyrefunksjon" name="nyrefunksjon"><br><br>
+                <input type="number" id="nyrefunksjon" name="nyrefunksjon" min="0"
+                    oninvalid="this.setCustomValidity('Verdien kan ikke være mindre enn 0. ')"
+                    oninput="this.setCustomValidity('')"> <br><br>
 
                 <!-- Hjertefunksjon -->
                 <label for="hjertefunksjon">Hjertefunksjon:</label>
-                <input type="number" id="hjertefunksjon" name="hjertefunksjon"><br><br>
+                <input type="number" id="hjertefunksjon" name="hjertefunksjon" min="0"
+                    oninvalid="this.setCustomValidity('Verdien kan ikke være mindre enn 0. ')"
+                    oninput="this.setCustomValidity('')"> <br><br>
+
+                <!-- Koma score -->
+                <label for="koma_score">Koma score:</label>
+                <input type="number" id="koma_score" name="koma_score" min="0"
+                    oninvalid="this.setCustomValidity('Verdien kan ikke være mindre enn 0. ')"
+                    oninput="this.setCustomValidity('')"> <br><br>
+
+                <!-- Urinmengde -->
+                <label for="urinmengde">Urinmengde:</label>
+                <input type="number" id="urinmengde" name="urinmengde" min="0"
+                    oninvalid="this.setCustomValidity('Verdien kan ikke være mindre enn 0. ')"
+                    oninput="this.setCustomValidity('')"> <br><br>
             </div>
         </div>
 
