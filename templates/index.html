@@ -51,8 +51,6 @@
             cursor: pointer;
             font-size: 16px;
             margin-top: 20px;
-            /* Optional: Adds space above the button */
-
         }
 
         button {
@@ -96,13 +94,6 @@
             text-align: center;
 
         }
-
-        /* Optional: Ensure the modal opens centered */
-        /*.prediction-container {
-            text-align: center;
-            margin-top: 30px;
-        }
-*/
     </style>
 </head>
 
@@ -187,12 +178,12 @@
                 </select><br><br>
 
 
-            <!-- Fysiologisk Komorbiditet Mult -->
-            <label for="fysiologisk_komorbiditet_mult">Fysiologisk Komorbiditet Mult:</label>
-            <input type="number" id="fysiologisk_komorbiditet_mult" name="fysiologisk_komorbiditet_mult" min="0"
-                required placeholder="fys * komorbiditeter"
-                oninvalid="this.setCustomValidity('Fyll inn fysiologisk score * komorbiditeter. Verdien kan ikke være mindre enn 0.')"
-                oninput="this.setCustomValidity('')"> <br><br>
+                <!-- Fysiologisk Komorbiditet Mult -->
+                <label for="fysiologisk_komorbiditet_mult">Fysiologisk Komorbiditet Mult:</label>
+                <input type="number" id="fysiologisk_komorbiditet_mult" name="fysiologisk_komorbiditet_mult" min="0"
+                    required placeholder="fys * komorbiditeter"
+                    oninvalid="this.setCustomValidity('Fyll inn fysiologisk score * komorbiditeter. Verdien kan ikke være mindre enn 0.')"
+                    oninput="this.setCustomValidity('')"> <br><br>
             </div>
 
 
