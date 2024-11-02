@@ -2,7 +2,6 @@ import pickle
 import numpy as np
 from flask import Flask, request, render_template
 import pandas as pd
-from sklearn.impute import KNNImputer
 from waitress import serve
 
 app = Flask(__name__)
@@ -28,11 +27,11 @@ def predict():
                           'koma_score']
 
         default_values = {
-            'blod_ph': 7.40, 'lungefunksjon': 333.3, 'blodurea_nitrogen': 6.5, 'glukose': 85,
+            'blod_ph': 7.40, 'lungefunksjon': 333.3, 'glukose': 85,
             'urinmengde': 2502, 'sykdomskategori': 1, 'adl_stedfortreder': 0.0, 'overlevelsesestimat_2mnd': 1.0,
             'overlevelsesestimat_6mnd': 1.0, 'lege_overlevelsesestimat_2mnd': 1.0, 'lege_overlevelsesestimat_6mnd': 1.0,
             'utdanning_kategori': 0.0, 'fysiologisk_score_merge': 0.0, 'fysiologisk_komorbiditet_mult': 0.0,
-            'kroppstemperatur': 37.0, 'serumalbumin': 3.0, 'hvite_blodlegemer': 11.0, 'nyrefunksjon': 52.0,
+            'kroppstemperatur': 37.0, 'serumalbumin': 3.0, 'hvite_blodlegemer': 7.5, 'nyrefunksjon': 52.0,
             'hjertefunksjon': 90.0, 'respirasjonsfrekvens': 23.0, 'antall_komorbiditeter': 0, 'koma_score': 0.0,
             'urinmengde': 2502.0
         }

@@ -25,4 +25,4 @@ Hvis man ønsker oppnåde resultater som i rapporten må du sette behold_sykdoms
 denne skrudd på igjen når man kommer til 5.0.1 variabelutvinning, og kan derfra bli skrudd på. I rapporten skriver jeg om 
 denne prosessen. Derfra er resterende if-setninger som jeg anvender skrudd på og tatt i bruk riktig. 
 
-I tillegg har jeg kun tatt med de viktigste hyper parameterene under kjøring, slik den tar kortere tid å kjøre. 
+I tillegg har jeg kun tatt med de viktigste hyper parameterene under kjøring, slik den tar kortere tid å kjøre ved innlevering. 
