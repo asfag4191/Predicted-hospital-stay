@@ -1,6 +1,5 @@
-## Hvordan kjøre filen ved innlevering. 
 
-Hele prosjektet mitt er 'prosjekt.ipynb', også fikser jeg sample filen i 'preprocessed.ipynb'. 
+Hele prosjektet mitt er 'prosjekt.ipynb', også fikser jeg sample filen i 'preprocessed.ipynb'. Appen er app.py, og templates er html-filen. 
 
 Jeg har laget den slik at den kan kjøres fra topp til bunn uten problemer. 
 Prosessen blir da i rekkefølgen: 
